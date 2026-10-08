@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Karaoké Rap Dev</title>
+  <style>
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      color: #94a3b8;
+      margin-bottom: 20px;
+      font-size: 0.9em;
+    }
+    .prompter {
+      background: #1e293b;
+      border: 2px solid #334155;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 650px;
+      height: 350px;
+      overflow-y: auto;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      scroll-behavior: smooth;
+    }
+    .line {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin: 8px 0;
+      opacity: 0.4;
+      transition: all 0.3s ease;
+    }
+    .line.active {
+      opacity: 1;
+      color: #38bdf8;
+      font-weight: bold;
+      font-size: 1.4rem;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+    }
+    button {
+      background-color: #38bdf8;
+      color: #0f172a;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background-color: #7dd3fc;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Rap Dev - Téléprompteur</h1>
+  <p class="subtitle">Lance une prod rap en fond et clique sur Démarrer !</p>
+
+  <div class="prompter" id="prompter">
+    <!-- Couplet 1 -->
+    <div class="line">[Couplet 1]</div>
+    <div class="line">J'allume l'écran, le terminal est noir, le curseur clignote</div>
+    <div class="line">Pas le temps de faire la fête, ce soir je tape des lignes de code</div>
+    <div class="line">Je lance mon VS Code, mon café est bien chaud</div>
+    <div class="line">Je suis le maître de la matrice, un poète du bureau</div>
+    <div class="line">Variables bien déclarées, mes fonctions sont carrées</div>
+    <div class="line">Je boucle sur le tableau sans jamais déraper</div>
+    <div class="line">Je manipule la logique, du JS jusqu'à Python</div>
+    <div class="line">Dans les arcanes du Web, c'est moi qui tiens le timon.</div>
+    
+    <!-- Refrain -->
+    <div class="line">[Refrain]</div>
+    <div class="line">Push sur Git, pas de conflit sur le Master,</div>
+    <div class="line">Mon code est tellement propre qu'il fait flipper les hackers.</div>
+    <div class="line">CTRL + S, compilation sans erreur,</div>
+    <div class="line">Bienvenue dans mon monde, ici le dev est seigneur.</div>
+
+    <!-- Couplet 2 -->
+    <div class="line">[Couplet 2]</div>
+    <div class="line">Mais parfois c'est le drame, un bug s'invite à la fête</div>
+    <div class="line">Deux heures sur la même ligne à me taper la tête</div>
+    <div class="line">Où est ce foutu point-virgule ? Pourquoi la promesse rejette ?</div>
+    <div class="line">La console m'affiche un rouge qui me donne la migraine</div>
+    <div class="line">Je sors console.log, je traque l'exception</div>
+    <div class="line">Stack Overflow en renfort, je trouve la solution</div>
+    <div class="line">Le sentiment de puissance quand la fonction s'exécute</div>
+    <div class="line">C'est comme marquer un but à la dernière minute.</div>
+
+    <!-- Outro -->
+    <div class="line">[Outro]</div>
+    <div class="line">Exit 0, le script tourne en prod</div>
+    <div class="line">Je ferme mon ordi, c'est l'heure où tout le monde dort...</div>
+  </div>
+
+  <div class="controls">
+    <button id="startBtn">Démarrer le karaoké</button>
+    <button id="resetBtn">Réinitialiser</button>
+  </div>
+
+  <script>
+    const lines = document.querySelectorAll('.line');
+    const prompter = document.getElementById('prompter');
+    const startBtn = document.getElementById('startBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    
+    let currentIndex = 0;
+    let timer = null;
+
+    function nextLine() {
+      if (currentIndex > 0) {
+        lines[currentIndex - 1].classList.remove('active');
+      }
+      
+      if (currentIndex < lines.length) {
+        const currentLine = lines[currentIndex];
+        currentLine.classList.add('active');
+        
+        // Fait défiler automatiquement le téléprompteur
+        prompter.scrollTop = currentLine.offsetTop - prompter.offsetTop - 100;
+        
+        currentIndex++;
+      } else {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    startBtn.addEventListener('click', () => {
+      if (!timer) {
+        nextLine();
+        // Fait défiler une ligne toutes les 2.8 secondes (ajuste selon le rythme de la prod)
+        timer = setInterval(nextLine, 2800); 
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      clearInterval(timer);
+      timer = null;
+      lines.forEach(line => line.classList.remove('active'));
+      currentIndex = 0;
+      prompter.scrollTop = 0;
+    });
+  </script>
+
+</body>
+</html>
